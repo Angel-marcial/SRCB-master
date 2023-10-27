@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="Shortcut Icon" type="image/x-icon" href="assets/icons/book.ico" />
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/main.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: blue;
+            height: 50px;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .blue-block {
+            background-color: lightblue;
+            min-height: 200px;
+            margin: 0 15px;
+        }
+
+        footer {
+            background: linear-gradient(to bottom, lightblue 60%, blue 60%);
+            height: 30px;
+        }
+
+        /* Estilos para hacer la tabla responsiva */
+        .table {
+            width: 100%;
+        }
+
+        .table th, .table td {
+            white-space: nowrap;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <main>
+        <div class="content">
+            <section class="full-reset text-center" style="padding: 40px 0;">
+                <h1>Administrador</h1>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID_Tra</th>
+                                <th>Area</th>
+                                <th>Linea</th>
+                                <th>Compartido</th>
+                                <th>NoPonentes</th>
+                                <th>Titulo</th>
+                                <th>ID_Pon(s)</th>
+                                <th>Ponente(s)</th>
+                                <th>Institucion(es)</th>
+                                <th>Investigador</th>
+                                <th>Fecha</th>
+                                <th>Dia</th>
+                                <th>Turno</th>
+                                <th>Bloque</th>
+                                <th>Salon</th>
+                                <th>Ubicacion</th>
+                                <th>Sede</th>
+                                <th>Editar</th>
+                                <th>Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Ciencias</td>
+                                <td>Física</td>
+                                <td>No</td>
+                                <td>1</td>
+                                <td>Investigación en Física Cuántica</td>
+                                <td>101</td>
+                                <td>Dr. Alejandro Gómez</td>
+                                <td>Universidad XYZ</td>
+                                <td>Dr. Alejandro Gómez</td>
+                                <td>2023-10-13</td>
+                                <td>Miércoles</td>
+                                <td>Mañana</td>
+                                <td>Bloque 1</td>
+                                <td>Sala A</td>
+                                <td>Campus Central</td>
+                                <td>Sede Principal</td>
+                                <td><button>Editar</button></td>
+                                <td><button>Borrar</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Tecnología</td>
+                                <td>Inteligencia Artificial</td>
+                                <td>Sí</td>
+                                <td>3</td>
+                                <td>Avances en IA y Robótica</td>
+                                <td>102, 103, 104</td>
+                                <td>Dr. María López, Dr. Juan Pérez, Dr. Laura Torres</td>
+                                <td>Instituto ABC, Universidad XYZ, Empresa ABC</td>
+                                <td>Dr. María López, Dr. Juan Pérez, Dr. Laura Torres</td>
+                                <td>2023-10-14</td>
+                                <td>Jueves</td>
+                                <td>Tarde</td>
+                                <td>Bloque 2</td>
+                                <td>Sala B</td>
+                                <td>Campus Norte</td>
+                                <td>Sede Secundaria</td>
+                                <td><button>Editar</button></td>
+                                <td><button>Borrar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button>Agregar Nuevo</button>
+                </div>
+            </section>
+            <div class="blue-block"></div>
+        </div>
+    </main>
+    <footer></footer>
+</body>
+</html>
