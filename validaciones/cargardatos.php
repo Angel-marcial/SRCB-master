@@ -1,15 +1,13 @@
 <?php
 include("../conexion.php");
 
-define("VENDOR", 'C:\xampp\htdocs\Base\vendor\autoload.php');
+define("VENDOR", 'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 
 //+++++++++++++++++++++++++++ instanciando clases ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 $Moderadores = new Moderadores($conn);
 $Sala = new Sala($conn);
 $Trabajo = new Trabajo($conn);
 $Area = new Area($conn);
-
 
 $Pais = new Pais($conn);
 $Investigador = new Investigador($conn);
