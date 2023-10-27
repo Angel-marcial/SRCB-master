@@ -1,7 +1,7 @@
 <?php
 include("../conexion.php");
 
-define("VENDOR", 'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
+define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 
 //+++++++++++++++++++++++++++ instanciando clases ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $Moderadores = new Moderadores($conn);
