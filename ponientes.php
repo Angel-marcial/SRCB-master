@@ -122,9 +122,6 @@
                 </tbody> 
             </table>
 
-            
-
-
             <a href="altas.html" class="botonP">Agregar uno nuevo</a>
 
             <form action="validaciones/cargardatos.php" method="post" enctype="multipart/form-data">
@@ -136,8 +133,6 @@
                 
                 <input type="submit" value="Cargar archivo panu ">
             </form>
-
-
 
                 <!--
                 <button class="botonP" id="cargarListaButton1">Cargar Moderadores</button>

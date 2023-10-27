@@ -1,5 +1,5 @@
 <?php
-//configurar su maquina para ocupar el puerto 3308
+//configurar su maquina para ocupar el puerto necesario para su ejecucion 
 $host = "localhost:3308";
 $usuario = "root";
 $contrasena = "";
