@@ -1,0 +1,1 @@
+Cada integrante del equipo debe de tener creada su base de datos en xampp
