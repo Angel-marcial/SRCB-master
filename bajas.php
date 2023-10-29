@@ -1,7 +1,7 @@
 <?php
 
 include("conexion.php");
-$con = conexion();
+$con = conexion();  // creo que esto ya no va 
 
 $id=$_GET[""];
 
