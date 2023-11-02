@@ -81,6 +81,8 @@
                         <th>Sede</th>
                         <th>Editar</th>
                         <th>Borrar</th>
+
+                        
                     </tr>
                 </thead>
                 <tbody>  
@@ -114,7 +116,8 @@
                         echo "<td>" . $row['Bloque'] . "</td>"; 
                         echo "<td>" . "S/D" . "</td>";
                         echo "<td>" . $row['Ubicacion'] . "</td>"; 
-                        echo "<td>" . $row['Sede'] . "</td>";    
+                        echo "<td>" . $row['Sede'] . "</td>";  
+                        
                         echo "</tr>";
                     }
                     
