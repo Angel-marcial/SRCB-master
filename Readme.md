@@ -1,5 +1,5 @@
 notas:
 
-carlos quiroz gonzalez
+Carlos Quiroz Gonzalez
 
 Angel Geovanni Marcial
