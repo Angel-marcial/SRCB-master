@@ -1,6 +1,6 @@
 <?php
 
-use Pais as GlobalPais;
+use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column;
 
 include("../conexion.php");
 
@@ -11,17 +11,21 @@ define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 //$Turno = new Turno($conn);
 //$Sala = new Sala($conn);
 //$Area = new Area($conn);
-//$Fecha = new Fecha($conn);
+$Fecha = new Fecha($conn);
 //$Pais = new Pais($conn); 
-$Ponentes = new Ponentes($conn);
-//++++++++++++++++++++++ llamndo a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
+//$Ponentes = new Ponentes($conn);
+//$Trabajo = new Trabajo($conn);
+
+//++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //$Turno -> cargarTurno();
 //$Sala -> cargarSala();
 //$Area -> cargarArea();
-//$Fecha -> cargarFecha();
+$Fecha -> cargarFecha();
 //$Pais ->cargarPais();
-$Ponentes -> cargarPonentes();
+//$Ponentes -> cargarPonentes();
+//$Trabajo -> cargaTrabajo();
+
 
 class Turno 
 {
@@ -409,6 +413,84 @@ class Ponentes
             }
         }
         echo "bien ponentes \n";
+    }
+}
+
+class Trabajo
+{
+    private $conn;
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function cargaTrabajo()
+    {
+        $idTrabajo = 49999;
+        if (isset($_FILES['archivo_excel2']))
+        {
+            require VENDOR;
+
+            $excel2 = $_FILES['archivo_excel2']['tmp_name'];
+            $spread1excel2 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel2);
+            $hojaexcel2 = $spread1excel2->getActiveSheet();
+
+            $firstRowSkipped2 = false;
+
+            $selectQuery = "SELECT ID_Fecha, Fecha_Completa FROM fecha";
+
+            $result = $this->conn->query($selectQuery);
+            $datosBD = array();
+
+            while ($row = $result->fetch_assoc())
+            {
+                $datosBD[] = $row;
+            }
+
+            foreach ($hojaexcel2->getRowIterator() as $fila)
+            {
+                if (!$firstRowSkipped2) 
+                {
+                    $firstRowSkipped2 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = array();
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }
+
+                $columna1 = $values[1];
+                $columna11 = $values[11];
+                
+                $sql = "INSERT INTO Trabajo (ID_Trabajo, ID_Fecha) VALUES (?, ?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("ss", $ID_Trabajo, $ID_Fecha);
+
+                foreach($datosBD as $filaBD)
+                {
+                    if($columna11 == $filaBD["Fecha_Completa"])
+                    {
+                        $ID_Fecha = $filaBD["ID_Fecha"];
+                    }
+                    else
+                    {
+                        $ID_Fecha = 1;
+                    }
+                }
+                if($columna1 !== null && $columna1 !== '')
+                {
+                    $idTrabajo = $idTrabajo + 1;
+                    $ID_Trabajo = $ID_Fecha;
+                }
+
+                $stmt->execute();
+            }
+        }
+        echo "bien Trabajo \n";
     }
 }
 
