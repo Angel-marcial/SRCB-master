@@ -82,11 +82,11 @@
                         <th>Editar</th>
                         <th>Borrar</th>
 
-                        
                     </tr>
                 </thead>
                 <tbody>  
                     <?php
+                    /*
                     include("conexion.php");
                     
                     $query = "SELECT Trabajo.*, Area.*, Sala.*, Ponente.*, Investigador.*
@@ -120,14 +120,14 @@
                         
                         echo "</tr>";
                     }
-                    
+                    */
                     ?>
-                </tbody> 
+                </tbody>                
             </table>
 
             <a href="altas.html" class="botonP">Agregar uno nuevo</a>
 
-            <form action="validaciones/cargardatos.php" method="post" enctype="multipart/form-data">
+            <form action="validaciones/cargardatos2.php" method="post" enctype="multipart/form-data">
                 <label>Moderadores:</label>
                 <input type="file" name="archivo_excel1" accept=".xlsx, .xls">
                 
@@ -136,40 +136,6 @@
                 
                 <input type="submit" value="Cargar archivo panu ">
             </form>
-
-                <!--
-                <button class="botonP" id="cargarListaButton1">Cargar Moderadores</button>
-                <input type="file" id="fileInput1" name="archivo_excel1" accept=".xlsx, .xls, application/vnd.ms-excel" style="display: none">
-                
-                <button class="botonP" id="cargarListaButton2">Cargar Programa</button>
-                <input type="file" id="fileInput2" name="archivo_excel2" accept=".xlsx, .xls, application/vnd.ms-excel" style="display: none">
-                
-                Elementos para mostrar el nombre del archivo 
-                <div id="fileNameDisplay1"></div>
-                <div id="fileNameDisplay2"></div>
-                
-
-                <script>
-                    document.getElementById("cargarListaButton1").addEventListener("click", function() {
-                        document.getElementById("fileInput1").click();
-                    });
-                
-                    document.getElementById("cargarListaButton2").addEventListener("click", function() {
-                        document.getElementById("fileInput2").click();
-                    });
-                
-                    document.getElementById("fileInput1").addEventListener("change", function() {
-                        const fileNameDisplay1 = document.getElementById("fileNameDisplay1");
-                        fileNameDisplay1.textContent = this.files[0] ? this.files[0].name : "No se ha seleccionado un archivo";
-                    });
-                
-                    document.getElementById("fileInput2").addEventListener("change", function() {
-                        const fileNameDisplay2 = document.getElementById("fileNameDisplay2");
-                        fileNameDisplay2.textContent = this.files[0] ? this.files[0].name : "No se ha seleccionado un archivo";
-                    });
-                </script>
-                -->
-
 
         </div>
     </section>
