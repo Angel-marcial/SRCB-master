@@ -7,7 +7,7 @@ include("../conexion.php");
 define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 
 //+++++++++++++++++++++++++++ instanciando clases ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-/*
+
 $Turno = new Turno($conn);
 $Sala = new Sala($conn);
 $Area = new Area($conn);
@@ -16,13 +16,11 @@ $Pais = new Pais($conn);
 $Ponentes = new Ponentes($conn);
 $Trabajo = new Trabajo($conn);
 $Moderadores = new Moderadores($conn);
-*/
 
-$Moderadores = new Moderadores($conn);
-$Moderadores->cargaModeradores();
+
 
 //++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
-/*
+
 $Turno -> cargarTurno();
 $Sala -> cargarSala();
 $Area -> cargarArea();
@@ -31,7 +29,7 @@ $Pais ->cargarPais();
 $Ponentes -> cargarPonentes();
 $Trabajo -> cargaTrabajo();
 $Moderadores->cargaModeradores();
-*/
+
 
 
 
