@@ -7,24 +7,32 @@ include("../conexion.php");
 define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 
 //+++++++++++++++++++++++++++ instanciando clases ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//$Turno = new Turno($conn);
-//$Sala = new Sala($conn);
-//$Area = new Area($conn);
-//$Fecha = new Fecha($conn);
-//$Pais = new Pais($conn); 
-//$Ponentes = new Ponentes($conn);
+/*
+$Turno = new Turno($conn);
+$Sala = new Sala($conn);
+$Area = new Area($conn);
+$Fecha = new Fecha($conn);
+$Pais = new Pais($conn); 
+$Ponentes = new Ponentes($conn);
 $Trabajo = new Trabajo($conn);
+$Moderadores = new Moderadores($conn);
+*/
+
+$Moderadores = new Moderadores($conn);
+$Moderadores->cargaModeradores();
 
 //++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//$Turno -> cargarTurno();
-//$Sala -> cargarSala();
-//$Area -> cargarArea();
-//$Fecha -> cargarFecha();
-//$Pais ->cargarPais();
-//$Ponentes -> cargarPonentes();
+/*
+$Turno -> cargarTurno();
+$Sala -> cargarSala();
+$Area -> cargarArea();
+$Fecha -> cargarFecha();
+$Pais ->cargarPais();
+$Ponentes -> cargarPonentes();
 $Trabajo -> cargaTrabajo();
+$Moderadores->cargaModeradores();
+*/
+
 
 
 class Turno 
@@ -541,6 +549,184 @@ class Trabajo
         echo "bien Trabajo \n";
     }
 }
+
+class Moderadores 
+{
+    private $conn;
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function CargaModeradores() 
+    {
+        $idExtra= 10000;
+
+        if (isset($_FILES['archivo_excel1']))
+        {
+            require VENDOR;
+
+            $excel1 = $_FILES['archivo_excel1']['tmp_name'];
+            $spread1excel1 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel1);
+            $hojaexcel1 = $spread1excel1->getActiveSheet();
+
+            $firstRowSkipped1 = false;
+
+            $querySala = "SELECT ID_Sala, Nombre_Sala FROM Sala";
+            $resultSala = $this->conn->query($querySala);
+            $datosSala = array();
+
+            while ($rowSala = $resultSala->fetch_assoc()) 
+            {
+                $datosSala[] = $rowSala;
+            }
+
+            $queryPais = "SELECT ID_Pais, Nombre_Pais FROM Pais";
+            $resultPais = $this->conn->query($queryPais);
+            $datosPais = array();
+
+            while ($rowPais = $resultPais->fetch_assoc()) 
+            {
+                $datosPais[] = $rowPais;
+            }
+
+            $queryArea = "SELECT ID_Area, Nombre_Area FROM Area";
+            $resultArea = $this->conn->query($queryArea);
+            $datosArea = array();
+
+            while ($rowArea = $resultArea->fetch_assoc()) 
+            {
+                $datosArea[] = $rowArea;
+            }
+
+            foreach ($hojaexcel1->getRowIterator() as $fila)
+            {
+                if (!$firstRowSkipped1) 
+                {
+                    $firstRowSkipped1 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }
+
+                $columna1 = $values[1];
+                $columna4 = $values[4];
+                $columna5 = $values[5];
+                $columna6 = $values[6];
+                $columna7 = $values[7];
+                $columna8 = $values[8];
+                $columna9 = $values[9];
+                $columna10 = $values[10];
+                $columna11 = $values[11];
+                $columna12 = $values[12];
+                
+                $sql = "INSERT INTO Moderador (ID_Moderador, ID_Sala, Nombre_SalaAlternativa, ID_Pais, ID_Area, Correo_Electronico, Correo_Electronico_Alternativo, Nombre_Moderador, Sexo, Celular ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("ssssssssss", $ID_Moderador, $ID_Sala, $Nombre_SalaAlternativa, $ID_Pais, $ID_Area, $Correo_Electronico, $Correo_Electronico_Alternativo, $Nombre_Moderador, $Sexo, $Celular );
+
+                if($columna5 !== null && $columna5 != '')
+                {
+                    $ID_Moderador = $columna5; 
+                }
+                else
+                {
+                    $idExtra = $idExtra + 1;
+                    $ID_Moderador = $idExtra;
+                }
+                foreach($datosSala as $filaSala)
+                {
+                    if($columna10 == $filaSala["Nombre_Sala"])
+                    {
+                        $ID_Sala = $filaSala["ID_Sala"];
+                    }
+                    else if($columna10 == null && $columna10 == '')
+                    {
+                        $ID_Sala = 1;
+                    }
+                }
+                if($columna12 !== null && $columna12 != '')
+                {
+                    $Nombre_SalaAlternativa = $columna12; 
+                }
+                else
+                {
+                    $Nombre_SalaAlternativa = "S/D";
+                }
+                foreach($datosPais as $filaPais)
+                {
+                    if($columna1 == $filaPais["Nombre_Pais"])
+                    {
+                        $ID_Pais = $filaPais["ID_Pais"];
+                    }
+                    else if($columna10 == null && $columna10 == '')
+                    {
+                        $ID_Pais = 1;
+                    }
+                }
+                foreach($datosArea as $filaArea)
+                {
+                    if($columna4 == $filaArea["Nombre_Area"])
+                    {
+                        $ID_Area = $filaArea["ID_Area"];
+                    }
+                    else if($columna4 == null && $columna4 == '')
+                    {
+                        $ID_Area = 1;
+                    }
+                }
+                if($columna6 !== null && $columna6 !== '')
+                {
+                    $Nombre_Moderador = $columna6;
+                }else
+                {
+                    $Nombre_Moderador = "S/D";
+                }
+                if($columna7 !== null && $columna7 !== '')
+                {
+                    $Sexo = $columna7;
+                }else
+                {
+                    $Sexo = "S/D";
+                }
+                if($columna8 !== null && $columna8 !== '')
+                {
+                    $Correo_Electronico = $columna8;
+                }else
+                {
+                    $Correo_Electronico = "S/D";
+                }
+                if($columna9 !== null && $columna9 !== '')
+                {
+                    $Celular = $columna9;
+                }else
+                {
+                    $Celular = "S/D";
+                }
+                if($columna11 !== null && $columna11 !== '')
+                {
+                    $Correo_Electronico_Alternativo = $columna11;
+                }else
+                {
+                    $Correo_Electronico_Alternativo = "S/D";
+                }
+
+
+
+            
+                $stmt->execute();
+            }
+        }
+        echo "bien moderadores \n";
+    }
+}
+
+
 
 
 
