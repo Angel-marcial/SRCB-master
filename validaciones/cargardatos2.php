@@ -1,4 +1,7 @@
 <?php
+
+use Pais as GlobalPais;
+
 include("../conexion.php");
 
 define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
@@ -8,15 +11,17 @@ define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 //$Turno = new Turno($conn);
 //$Sala = new Sala($conn);
 //$Area = new Area($conn);
-$Fecha = new Fecha($conn);
-
+//$Fecha = new Fecha($conn);
+//$Pais = new Pais($conn); 
+$Ponentes = new Ponentes($conn);
 //++++++++++++++++++++++ llamndo a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //$Turno -> cargarTurno();
 //$Sala -> cargarSala();
 //$Area -> cargarArea();
-$Fecha -> cargarFecha();
-
+//$Fecha -> cargarFecha();
+//$Pais ->cargarPais();
+$Ponentes -> cargarPonentes();
 
 class Turno 
 {
@@ -266,8 +271,149 @@ class Fecha
                 }
             }
         }
-        echo "bien Area \n";
+        echo "bien Fecha \n";
     }
 }
+
+class Pais
+{
+    private $conn;
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function cargarPais() 
+    {
+
+        if (isset($_FILES['archivo_excel1']))
+        {
+            require VENDOR;
+
+            $excel1 = $_FILES['archivo_excel1']['tmp_name'];
+            $spread1excel1 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel1);
+            $hojaexcel1 = $spread1excel1->getActiveSheet();
+
+            $firstRowSkipped1 = false;
+
+            foreach ($hojaexcel1->getRowIterator() as $fila)
+            {
+                if (!$firstRowSkipped1) 
+                {
+                    $firstRowSkipped1 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }
+
+                $columna1 = $values[1];
+        
+                if ($columna1 !== null && $columna1 !== '') 
+                {
+                    $Nombre_Pais = $columna1; 
+
+                    $stmt = $this->conn->prepare("SELECT Nombre_Pais FROM Pais WHERE Nombre_Pais = ?");
+                    $stmt->bind_param("s", $Nombre_Pais);
+                    $stmt->execute();
+                    $stmt->store_result();
+
+                    if ($stmt->num_rows == 0) 
+                    {
+                        $stmt = $this->conn->prepare("INSERT INTO Pais (Nombre_Pais) VALUES (?)");
+                        $stmt->bind_param("s", $Nombre_Pais);
+                        $stmt->execute();
+                    }
+                }
+            }
+        }
+        echo "bien Pais \n";
+    }
+}
+
+class Ponentes
+{
+    private $conn;
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function cargarPonentes() 
+    {
+        $idtem = 49999;
+        $idequipo = 0;
+        if (isset($_FILES['archivo_excel2']))
+        {
+            require VENDOR;
+
+            $excel2 = $_FILES['archivo_excel2']['tmp_name'];
+            $spread1excel2 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel2);
+            $hojaexcel2 = $spread1excel2->getActiveSheet();
+
+            $firstRowSkipped2 = false;
+
+        
+            foreach ($hojaexcel2->getRowIterator() as $fila)
+            {
+                if (!$firstRowSkipped2) 
+                {
+                    $firstRowSkipped2 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }
+
+                $columna7 = $values[7];
+                $columna8 = $values[8];
+           
+                $sql = "INSERT INTO Ponente (ID_Ponente, ID_Equipo, Nombre_Ponente) VALUES (?, ?, ?)";
+                $stmt = $this->conn->prepare($sql);
+                
+                $ids = explode(",", $columna7);
+                $nombres = explode(",", $columna8);
+
+                if (count($ids) === count($nombres)) 
+                {
+                    $idequipo = $idequipo + 1;
+                    for ($i = 0; $i < count($ids); $i++) 
+                    {
+                        $ID_Ponente = $ids[$i];
+                        $Nombre_Ponente = $nombres[$i];
+                        
+                        if($columna7 == '')
+                        {
+                            $idtem = $idtem + 1;
+                            $ID_Ponente = $idtem;
+                        }
+                        if($columna8 == '')
+                        {
+                            $Nombre_Ponente = "S/D";
+                        }
+                        $ID_Equipo = $idequipo;
+                        $stmt->bind_param("sss", $ID_Ponente, $ID_Equipo, $Nombre_Ponente);
+                        $stmt->execute();
+                    }
+                }
+            }
+        }
+        echo "bien ponentes \n";
+    }
+}
+
+
+
+
 
 ?>
