@@ -474,17 +474,23 @@ class Trabajo
                 $columna1 = $values[1];
                 $columna11 = $values[11];
                 $columna13 = $values[13];
+                $columna3 = $values[3];
+                $columna6 = $values[6];
+                $columna4 = $values[4];
 
-                
-                $sql = "INSERT INTO Trabajo (ID_Trabajo, ID_Fecha, ID_Turno) VALUES (?, ?, ?)";
+                $sql = "INSERT INTO Trabajo (ID_Trabajo, ID_Fecha, ID_Turno, Linea, Titulo, Compartido) VALUES (?, ?, ? ,? ,? ,?)";
                 $stmt = $this->conn->prepare($sql);
-                $stmt->bind_param("sss", $ID_Trabajo, $ID_Fecha, $ID_Turno);
+                $stmt->bind_param("ssssss", $ID_Trabajo, $ID_Fecha, $ID_Turno, $Linea, $Titulo, $Compartido);
 
                 foreach($datosFecha as $filaFecha)
                 {
                     if($columna11 == $filaFecha["Fecha_Completa"])
                     {
                         $ID_Fecha = $filaFecha["ID_Fecha"];
+                    }
+                    else if($columna11 == null && $columna11 == '')
+                    {
+                        $ID_Fecha = 1;
                     }
                 }
                 foreach($datosTurno as $filaTurno)
@@ -498,8 +504,6 @@ class Trabajo
                         $ID_Turno = 1;
                     }
                 }
-
-
                 if($columna1 !== null && $columna1 !== '')
                 {
                     $ID_Trabajo = $columna1;
@@ -509,7 +513,27 @@ class Trabajo
                     $idTrabajo = $idTrabajo + 1;
                     $ID_Trabajo = $idTrabajo;
                 }
-
+                if ($columna3 !== null && $columna3 !== '') 
+                {
+                    $Linea = $columna3;
+                } else 
+                {
+                    $Linea = "S/D";
+                }
+                if ($columna6 !== null && $columna6 !== '') 
+                {
+                    $Titulo = $columna6;
+                } else 
+                {
+                    $Titulo = "S/D";
+                }
+                if ($columna4 !== null && $columna4 !== '') 
+                {
+                    $Compartido = $columna4;
+                } else 
+                {
+                    $Compartido = "S/D";
+                }
 
                 $stmt->execute();
             }
