@@ -11,20 +11,20 @@ define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 //$Turno = new Turno($conn);
 //$Sala = new Sala($conn);
 //$Area = new Area($conn);
-$Fecha = new Fecha($conn);
+//$Fecha = new Fecha($conn);
 //$Pais = new Pais($conn); 
 //$Ponentes = new Ponentes($conn);
-//$Trabajo = new Trabajo($conn);
+$Trabajo = new Trabajo($conn);
 
 //++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //$Turno -> cargarTurno();
 //$Sala -> cargarSala();
 //$Area -> cargarArea();
-$Fecha -> cargarFecha();
+//$Fecha -> cargarFecha();
 //$Pais ->cargarPais();
 //$Ponentes -> cargarPonentes();
-//$Trabajo -> cargaTrabajo();
+$Trabajo -> cargaTrabajo();
 
 
 class Turno 
@@ -437,14 +437,22 @@ class Trabajo
 
             $firstRowSkipped2 = false;
 
-            $selectQuery = "SELECT ID_Fecha, Fecha_Completa FROM fecha";
+            $queryFecha = "SELECT ID_Fecha, Fecha_Completa FROM fecha";
+            $resultFecha = $this->conn->query($queryFecha);
+            $datosFecha = array();
 
-            $result = $this->conn->query($selectQuery);
-            $datosBD = array();
-
-            while ($row = $result->fetch_assoc())
+            while ($rowFecha = $resultFecha->fetch_assoc()) 
             {
-                $datosBD[] = $row;
+                $datosFecha[] = $rowFecha;
+            }
+
+            $queryTurno = "SELECT ID_Turno, Nombre_Turno FROM Turno";
+            $resultTurno = $this->conn->query($queryTurno);
+            $datosTurno = array();
+
+            while ($rowTurno = $resultTurno->fetch_assoc()) 
+            {
+                $datosTurno[] = $rowTurno;
             }
 
             foreach ($hojaexcel2->getRowIterator() as $fila)
@@ -465,27 +473,43 @@ class Trabajo
 
                 $columna1 = $values[1];
                 $columna11 = $values[11];
-                
-                $sql = "INSERT INTO Trabajo (ID_Trabajo, ID_Fecha) VALUES (?, ?)";
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bind_param("ss", $ID_Trabajo, $ID_Fecha);
+                $columna13 = $values[13];
 
-                foreach($datosBD as $filaBD)
+                
+                $sql = "INSERT INTO Trabajo (ID_Trabajo, ID_Fecha, ID_Turno) VALUES (?, ?, ?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("sss", $ID_Trabajo, $ID_Fecha, $ID_Turno);
+
+                foreach($datosFecha as $filaFecha)
                 {
-                    if($columna11 == $filaBD["Fecha_Completa"])
+                    if($columna11 == $filaFecha["Fecha_Completa"])
                     {
-                        $ID_Fecha = $filaBD["ID_Fecha"];
+                        $ID_Fecha = $filaFecha["ID_Fecha"];
+                    }
+                }
+                foreach($datosTurno as $filaTurno)
+                {
+                    if($columna13 == $filaTurno["Nombre_Turno"])
+                    {
+                        $ID_Turno = $filaTurno["ID_Turno"];
                     }
                     else
                     {
-                        $ID_Fecha = 1;
+                        $ID_Turno = 1;
                     }
                 }
+
+
                 if($columna1 !== null && $columna1 !== '')
                 {
-                    $idTrabajo = $idTrabajo + 1;
-                    $ID_Trabajo = $ID_Fecha;
+                    $ID_Trabajo = $columna1;
                 }
+                else
+                {
+                    $idTrabajo = $idTrabajo + 1;
+                    $ID_Trabajo = $idTrabajo;
+                }
+
 
                 $stmt->execute();
             }
