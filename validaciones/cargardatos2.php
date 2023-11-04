@@ -8,6 +8,7 @@ define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 
 //+++++++++++++++++++++++++++ instanciando clases ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+/*
 $Turno = new Turno($conn);
 $Sala = new Sala($conn);
 $Area = new Area($conn);
@@ -16,11 +17,14 @@ $Pais = new Pais($conn);
 $Ponentes = new Ponentes($conn);
 $Trabajo = new Trabajo($conn);
 $Moderadores = new Moderadores($conn);
+$InstitucionM = new InstitucionM($conn);
+$InstitucionP = new InstitucionP($conn);
+*/
 
 
 
 //++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
-
+/*
 $Turno -> cargarTurno();
 $Sala -> cargarSala();
 $Area -> cargarArea();
@@ -29,10 +33,9 @@ $Pais ->cargarPais();
 $Ponentes -> cargarPonentes();
 $Trabajo -> cargaTrabajo();
 $Moderadores->cargaModeradores();
-
-
-
-
+$InstitucionM->CargaInstitucionM();
+$InstitucionP->CargaInstitucionP();
+*/
 class Turno 
 {
     private $conn;
@@ -662,7 +665,7 @@ class Moderadores
                     {
                         $ID_Pais = $filaPais["ID_Pais"];
                     }
-                    else if($columna10 == null && $columna10 == '')
+                    else if($columna1 == null && $columna1 == '')
                     {
                         $ID_Pais = 1;
                     }
@@ -713,10 +716,6 @@ class Moderadores
                 {
                     $Correo_Electronico_Alternativo = "S/D";
                 }
-
-
-
-            
                 $stmt->execute();
             }
         }
@@ -724,6 +723,166 @@ class Moderadores
     }
 }
 
+class InstitucionM
+{
+    private $conn;
+
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function CargaInstitucionM()
+    {
+
+        $idInstitucionI = 0;
+        $idInstitucionC = "Mod ";
+
+        if (isset($_FILES['archivo_excel1'])) 
+        {
+            require VENDOR;
+
+            $excel1 = $_FILES['archivo_excel1']['tmp_name'];
+            $spread1excel1 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel1);
+            $hojaexcel1 = $spread1excel1->getActiveSheet();
+            $firstRowSkipped1 = false;
+
+
+            $queryPais = "SELECT ID_Pais, Nombre_Pais FROM Pais";
+            $resultPais = $this->conn->query($queryPais);
+            $datosPais = array();
+
+            while ($rowPais = $resultPais->fetch_assoc()) 
+            {
+                $datosPais[] = $rowPais;
+            }
+
+            foreach ($hojaexcel1->getRowIterator() as $fila)
+            {
+
+                if (!$firstRowSkipped1) 
+                {
+                    $firstRowSkipped1 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }           
+
+                $columna1 = $values[1];
+                $columna2 = $values[2];
+
+                if ($columna2 !== null && $columna2 !== '') 
+                {
+                    $Nombre_Institucion = $columna2;
+                    $idInstitucionI = $idInstitucionI + 1;
+                    $ID_Institucion = $idInstitucionC . strval($idInstitucionI);
+
+                    $stmt = $this->conn->prepare("SELECT Nombre_Institucion FROM Institucion WHERE Nombre_Institucion = ?");
+                    $stmt->bind_param("s", $Nombre_Institucion);
+                    $stmt->execute();
+                    $stmt->store_result();
+
+                    if ($stmt->num_rows == 0) 
+                    {
+                        foreach($datosPais as $filaPais)
+                        {
+                            if($columna1 == $filaPais["Nombre_Pais"])
+                            {
+                                $ID_Pais = $filaPais["ID_Pais"];
+                            }
+                            else if($columna1 == null && $columna1 == '')
+                            {
+                                $ID_Pais = 1;
+                            }
+                        }
+
+                        $sql = "INSERT INTO Institucion(ID_Institucion, Nombre_Institucion, ID_Pais) VALUES (?, ?, ?)";
+                        $stmt = $this->conn->prepare($sql);
+                        $stmt->bind_param("sss", $ID_Institucion, $Nombre_Institucion, $ID_Pais);
+                        $stmt->execute();
+                    }
+                }
+            } 
+        }
+        echo "bien institucion Moderador \n";     
+    }
+}
+
+class InstitucionP
+{
+    private $conn;
+
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function CargaInstitucionP()
+    {
+
+        $idInstitucionI = 0;
+        $idInstitucionC = "Pon ";
+
+        if (isset($_FILES['archivo_excel2'])) 
+        {
+            require VENDOR;
+
+            $excel2 = $_FILES['archivo_excel2']['tmp_name'];
+            $spread1excel2 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel2);
+            $hojaexcel2 = $spread1excel2->getActiveSheet();
+            $firstRowSkipped2 = false;
+
+            foreach ($hojaexcel2->getRowIterator() as $fila)
+            {
+
+                if (!$firstRowSkipped2) 
+                {
+                    $firstRowSkipped2 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }           
+
+                $columna9 = $values[9];
+
+                if ($columna9 !== null && $columna9 !== '') 
+                {
+                    $Nombre_Institucion = $columna9;
+                    $idInstitucionI = $idInstitucionI + 1;
+                    $ID_Institucion = $idInstitucionC . strval($idInstitucionI);
+                    $ID_Pais = 1;
+
+                    $stmt = $this->conn->prepare("SELECT Nombre_Institucion FROM Institucion WHERE Nombre_Institucion = ?");
+                    $stmt->bind_param("s", $Nombre_Institucion);
+                    $stmt->execute();
+                    $stmt->store_result();
+
+                    if ($stmt->num_rows == 0) 
+                    {
+                        $sql = "INSERT INTO Institucion(ID_Institucion, Nombre_Institucion, ID_Pais) VALUES (?, ?, ?)";
+                        $stmt = $this->conn->prepare($sql);
+                        $stmt->bind_param("sss", $ID_Institucion, $Nombre_Institucion, $ID_Pais);
+                        
+                        $stmt->execute();
+                    }
+                }
+            } 
+        }
+        echo "bien institucion ponentes \n";     
+    }
+}
 
 
 
