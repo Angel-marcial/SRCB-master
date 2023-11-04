@@ -20,7 +20,7 @@ CREATE TABLE Salon (
     ID_Salon INT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Salon VARCHAR(255) NOT NULL,
     Bloque VARCHAR(255) NOT NULL,
-    Ubicacion VARCHAR(255) NOT NULL
+    Ubicacion VARCHAR(255) NOT NULL,
     Sede VARCHAR(255) NOT NULL
 );
 
@@ -109,7 +109,7 @@ CREATE TABLE Institucion (
     FOREIGN KEY (ID_Pais) REFERENCES Pais(ID_Pais)
 );  
 
-INSERT INTO Institucion(ID_Institucion,Nombre_Pais,ID_Pais) VALUES ("1-S/D","S/D","S/D");
+INSERT INTO Institucion(ID_Institucion,Nombre_Institucion,ID_Pais) VALUES ("1-S/D","S/D",1);
 
 CREATE TABLE Investigador (
     ID_Investigador INT AUTO_INCREMENT PRIMARY KEY,
