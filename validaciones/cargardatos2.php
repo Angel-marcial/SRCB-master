@@ -1,5 +1,6 @@
 <?php
 
+use Investigador as GlobalInvestigador;
 use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column;
 
 include("../conexion.php");
@@ -21,7 +22,8 @@ $InstitucionM = new InstitucionM($conn);
 $InstitucionP = new InstitucionP($conn);
 */
 
-
+$Investigador = new Investigador($conn);
+$Investigador -> cargarInvestigador();
 
 //++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
 /*
@@ -884,7 +886,63 @@ class InstitucionP
     }
 }
 
+class Investigador 
+{
+    private $conn;
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
 
+    public function cargarInvestigador()
+    {
+        if (isset($_FILES['archivo_excel2'])) {
+            require VENDOR;
+
+            $excel2 = $_FILES['archivo_excel2']['tmp_name'];
+            $spread1excel2 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel2);
+            $hojaexcel2 = $spread1excel2->getActiveSheet();
+            $firstRowSkipped2 = false;
+
+            foreach ($hojaexcel2->getRowIterator() as $fila) 
+            {
+                if (!$firstRowSkipped2) 
+                {
+                    $firstRowSkipped2 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }
+
+                $columna10 = $values[10];
+
+                if ($columna10 !== null && $columna10 !== '') 
+                {
+                    $Nombre_Investigador = $columna10; 
+
+                    $stmt = $this->conn->prepare("SELECT Nombre_Investigador FROM Investigador WHERE Nombre_Investigador = ?");
+                    $stmt->bind_param("s", $Nombre_Investigador);
+                    $stmt->execute();
+                    $stmt->store_result();
+
+                    if ($stmt->num_rows == 0) 
+                    {
+                        $stmt = $this->conn->prepare("INSERT INTO Investigador (Nombre_Investigador) VALUES (?)");
+                        $stmt->bind_param("s", $Nombre_Investigador);
+                        $stmt->execute();
+                    }
+                }
+            }
+        }
+        echo "bien Investigador\n";
+    }
+}
 
 
 
