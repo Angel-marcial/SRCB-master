@@ -75,7 +75,6 @@ CREATE TABLE Trabajo (
     FOREIGN KEY (ID_Turno) REFERENCES Turno(ID_Turno)
 );
 
-
 CREATE TABLE Moderador (
     ID_Moderador VARCHAR(255) PRIMARY KEY,
     ID_Sala INT,
@@ -93,17 +92,17 @@ CREATE TABLE Moderador (
 );
 
 CREATE TABLE Institucion (
-    ID_Institucion VARCHAR(255) PRIMARY KEY,
+    ID_Institucion VARCHAR(20) PRIMARY KEY,
     Nombre_Institucion VARCHAR(255),
-    ID_Pais VARCHAR(255),
+    ID_Pais INT,
     FOREIGN KEY (ID_Pais) REFERENCES Pais(ID_Pais)
-);
+);  
+
+INSERT INTO Institucion(ID_Institucion,Nombre_Pais,ID_Pais) VALUES ("1-S/D","S/D","S/D");
 
 CREATE TABLE Investigador (
-    ID_Investigador VARCHAR(255) PRIMARY KEY,
-    ID_Institucion VARCHAR(255),
-    Nombre_Investigador VARCHAR(255),
-    FOREIGN KEY (ID_Institucion) REFERENCES Institucion(ID_Institucion)
+    ID_Investigador INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre_Investigador VARCHAR(255)
 );
 
 CREATE TABLE Equipo_Ponente (
@@ -127,7 +126,3 @@ CREATE TABLE Alumno (
     Confirmacion_Asistencia BOOLEAN,
     FOREIGN KEY (ID_Trabajo) REFERENCES Trabajo(ID_Trabajo)
 );
-
-
-
-
