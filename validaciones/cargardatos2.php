@@ -2,6 +2,7 @@
 
 use Investigador as GlobalInvestigador;
 use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column;
+use Sesion as GlobalSesion;
 
 include("../conexion.php");
 
@@ -19,11 +20,10 @@ $Pais = new Pais($conn);
 $Ponentes = new Ponentes($conn);
 $Trabajo = new Trabajo($conn);
 $Moderadores = new Moderadores($conn);
+$Sesion = new Sesion($conn);
 $InstitucionM = new InstitucionM($conn);
 $InstitucionP = new InstitucionP($conn);
 $Investigador = new Investigador($conn);
-
-
 
 
 
@@ -38,9 +38,13 @@ $Pais ->cargarPais();
 $Ponentes -> cargarPonentes();
 $Trabajo -> cargaTrabajo();
 $Moderadores->cargaModeradores();
+$Sesion -> cargaUsuarios();
 $InstitucionM->CargaInstitucionM();
 $InstitucionP->CargaInstitucionP();
 $Investigador -> cargarInvestigador();
+
+
+
 
 class Turno 
 {
@@ -809,6 +813,40 @@ class Moderadores
             }
         }
         echo "bien moderadores \n";
+    }
+}
+
+class Sesion
+{
+    private $conn;
+
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+    
+    public function cargaUsuarios()
+    {
+        $selectQuery = "SELECT Correo_Electronico FROM Moderador";
+
+        $result = $this->conn->query($selectQuery);
+        
+        if ($result->num_rows > 0) 
+        {
+            while ($row = $result->fetch_assoc()) 
+            {
+                $correo = $row['Correo_Electronico'];
+                $passwd = "1234";
+                $tipo = "mod";
+
+                $sql = "INSERT INTO sesion (correo ,contrasenia,tipo) VALUES (?, ?, ?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("sss", $correo,$passwd,$tipo);
+
+                $stmt->execute();
+            }
+        }
+        echo "bien Sesion \n";
     }
 }
 

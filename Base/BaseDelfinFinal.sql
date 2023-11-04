@@ -116,6 +116,9 @@ CREATE TABLE Investigador (
     Nombre_Investigador VARCHAR(255)
 );
 
+
+//estas tablas no las metan estan en proceso 
+
 CREATE TABLE Equipo_Ponente (
     ID_Equipo VARCHAR(255) PRIMARY KEY,
     ID_Ponente VARCHAR(255),
