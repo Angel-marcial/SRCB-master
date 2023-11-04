@@ -20,10 +20,11 @@ $Trabajo = new Trabajo($conn);
 $Moderadores = new Moderadores($conn);
 $InstitucionM = new InstitucionM($conn);
 $InstitucionP = new InstitucionP($conn);
-*/
-
 $Investigador = new Investigador($conn);
-$Investigador -> cargarInvestigador();
+*/
+$Salon = new Salon($conn);
+$Salon ->cargarSalon();
+
 
 //++++++++++++++++++++++ llamando a los metodos +++++++++++++++++++++++++++++++++++++++++++++++++++
 /*
@@ -37,6 +38,7 @@ $Trabajo -> cargaTrabajo();
 $Moderadores->cargaModeradores();
 $InstitucionM->CargaInstitucionM();
 $InstitucionP->CargaInstitucionP();
+$Investigador -> cargarInvestigador();
 */
 class Turno 
 {
@@ -162,6 +164,89 @@ class Sala
     }
 }
 
+class Salon
+{
+    private $conn;
+    public function __construct($dbConnection) 
+    {
+        $this->conn = $dbConnection;
+    }
+
+    public function cargarSalon() 
+    {
+
+        if (isset($_FILES['archivo_excel2'])) {
+            require VENDOR;
+
+            $excel2 = $_FILES['archivo_excel2']['tmp_name'];
+            $spread1excel2 = \PhpOffice\PhpSpreadsheet\IOFactory::load($excel2);
+            $hojaexcel2 = $spread1excel2->getActiveSheet();
+
+            $firstRowSkipped2 = false;
+
+            foreach ($hojaexcel2->getRowIterator() as $fila) 
+            {
+                if (!$firstRowSkipped2) 
+                {
+                    $firstRowSkipped2 = true;
+                    continue; 
+                }
+
+                $data = $fila->getCellIterator();
+                $values = [];
+
+                foreach ($data as $celda) 
+                {
+                    $values[] = $celda->getValue();
+                }
+
+                $columna14 = $values[14];
+                $columna15 = $values[15];
+                $columna16 = $values[16];
+                $columna17 = $values[17];
+                      
+                $stmt = $this->conn->prepare("INSERT INTO Salon (Nombre_Salon, Bloque, Ubicacion, Sede) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssss",$Nombre_Salon, $Bloque, $Ubicacion, $Sede);
+        
+                if ($columna14 !== null && $columna14 !== '') 
+                {
+                    $Bloque = $columna14; 
+
+                }else
+                {
+                    $Bloque = "S/D";
+                }
+                if ($columna15 !== null && $columna15 !== '') 
+                {
+                    $Nombre_Salon = $columna15; 
+
+                }else
+                {
+                    $Nombre_Salon = "S/D";
+                }
+                if ($columna16 !== null && $columna16 !== '') 
+                {
+                    $Ubicacion = $columna16; 
+
+                }else
+                {
+                    $Ubicacion = "S/D";
+                }
+                if ($columna17 !== null && $columna17 !== '') 
+                {
+                    $Sede = $columna17; 
+
+                }else
+                {
+                    $Sede = "S/D";
+                }
+                $stmt->execute();
+
+            }
+        }
+        echo "bien salon \n";
+    }
+}
 
 class Area
 {
