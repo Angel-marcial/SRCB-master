@@ -16,6 +16,15 @@ CREATE TABLE Sala (
 
 INSERT INTO sala(Nombre_Sala) VALUES ("S/D");
 
+CREATE TABLE Salon (
+    ID_Salon INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre_Salon VARCHAR(255) NOT NULL,
+    Bloque VARCHAR(255) NOT NULL,
+    Ubicacion VARCHAR(255) NOT NULL
+    Sede VARCHAR(255), NOT NULL
+);
+
+
 CREATE TABLE Area (
     ID_Area INT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Area VARCHAR(255) NOT NULL
@@ -63,6 +72,8 @@ CREATE TABLE Sesion (
 
 INSERT INTO Sesion(correo,contrasenia,tipo) 
 VALUES("Mauro@gmail.com","pass0","admin");
+
+
 
 CREATE TABLE Trabajo (
     ID_Trabajo VARCHAR(255) PRIMARY KEY,
