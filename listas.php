@@ -187,10 +187,7 @@
             </div>
         </div>
         <div class="footer-copyright full-reset all-tittles">
-
-            ® Programa Delfín
-
-            Programa Interinstitucional para el Fortalecimiento de la Investigación y el Posgrado del Pacífico
+            
         </div>
     </footer>
 </body>
