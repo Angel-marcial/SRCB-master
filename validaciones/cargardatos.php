@@ -10,7 +10,6 @@ define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
 
 //+++++++++++++++++++++++++++ instanciando clases ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 $Turno = new Turno($conn);
 $Sala = new Sala($conn);
 $Salon = new Salon($conn);

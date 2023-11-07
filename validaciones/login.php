@@ -15,10 +15,10 @@ $row = $resultado->fetch_assoc();
 if ($row['correo'] == $nombre && $row['contrasenia'] == $passwd) {
     if($row['tipo']=="admin"){
 
-        header("Location: ../home.html");
+        header("Location: ../ponentes.php");
 
     }else{
-        header("Location: ../admin.html");
+        header("Location: ../ejemplo.html");
     }
     }else{
         header("Location:../index.html");
