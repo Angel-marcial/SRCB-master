@@ -140,30 +140,60 @@
                 </div>
             </div>
 
-            <a href="altas.html" class="botonP">Agregar uno nuevo</a>
-
             <!-- Botón "Cargar Moderadores" -->
-            <button class="botonP" id="cargarModeradoresButton">Cargar Moderadores</button>
-            <!-- Elemento de entrada de tipo "file" oculto para Cargar Moderadores -->
-            <input type="file" id="fileInputModeradores" accept=".xls, .xlsx" style="display: none">
 
-            <!-- Botón "Cargar Ponientes" -->
-            <button class="botonP" id="cargarPonientesButton">Cargar Ponientes</button>
-            <!-- Elemento de entrada de tipo "file" oculto para Cargar Ponientes -->
-            <input type="file" id="fileInputPonientes" accept=".xls, .xlsx" style="display: none">
+            <form action="validaciones/cargardatos.php" method="post" enctype="multipart/form-data">
+                
+                <a href="altas.html" class="botonP">Agregar uno nuevo</a>
 
-            <!-- Botón "Cargar" para iniciar la carga de archivos -->
-            <button class="botonP" id="cargarButton">Cargar</button>
+                <label for="archivo_excel1" class="botonP">Cargar Moderadores</label>
+                <input id="archivo_excel1" type="file" name="archivo_excel1" accept=".xlsx, .xls" style="display: none">
+                <span id="nombre_archivo"></span>
+
+                <label for="archivo_excel2" class="botonP">Cargar Ponentes</label>
+                <input id="archivo_excel2" type="file" name="archivo_excel2" accept=".xlsx, .xls" style="display: none">
+                <span id="nombre_archivo2"></span>
+
+                <button class="botonP" id="cargarButton">Cargar</button>
+                <input type="submit" style="display: none;">
+            </form>
 
             <script>
-                // JavaScript para abrir el cuadro de diálogo de selección de archivos
-                document.getElementById("cargarPonientesButton").addEventListener("click", function () {
-                    document.getElementById("fileInputPonientes").click();
+                document.getElementById("archivo_excel1").addEventListener("change", function () {
+                    const input = this;
+                    const spanNombreArchivo = document.getElementById("nombre_archivo");
+                    if (input.files.length > 0) {
+                        spanNombreArchivo.textContent = "Archivo seleccionado: " + input.files[0].name;
+                    } else {
+                        spanNombreArchivo.textContent = ""; // Limpiar el texto si no se selecciona ningún archivo
+                    }
                 });
 
-                document.getElementById("cargarModeradoresButton").addEventListener("click", function () {
-                    document.getElementById("fileInputModeradores").click();
+                document.getElementById("archivo_excel2").addEventListener("change", function () {
+                    const input = this;
+                    const spanNombreArchivo2 = document.getElementById("nombre_archivo");
+                    if (input.files.length > 0) {
+                        spanNombreArchivo2.textContent = "Archivo seleccionado: " + input.files[0].name;
+                    } else {
+                        spanNombreArchivo2.textContent = ""; // Limpiar el texto si no se selecciona ningún archivo
+                    }
                 });
+            </script>
+
+
+
+           
+
+
+                <script>
+                    // JavaScript para abrir el cuadro de diálogo de selección de archivos
+                    document.getElementById("cargarModeradoresButton").addEventListener("click", function () {
+                        document.getElementById("archivo_excel1").click();
+                    });
+
+                    document.getElementById("cargarPonientesButton").addEventListener("click", function () {
+                        document.getElementById("archivo_excel2").click();
+                    });
 
                 function mostrarModal(contenido) {
                     document.getElementById("modalContent").innerHTML = contenido;

@@ -127,8 +127,9 @@
 
             <a href="altas.html" class="botonP">Agregar uno nuevo</a>
 
-            <form action="validaciones/cargardatos2.php" method="post" enctype="multipart/form-data">
+            <form action="validaciones/cargardatos.php" method="post" enctype="multipart/form-data">
                 <label>Moderadores:</label>
+                
                 <input type="file" name="archivo_excel1" accept=".xlsx, .xls">
                 
                 <label>Programa:</label>
