@@ -1,3 +1,50 @@
+<?php
+// Verificar si se ha enviado el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    // Recoger datos del formulario
+    $ID_Tra = $_POST["ID_Tra"];
+    $Area = $_POST["Area"];
+    $Linea = $_POST["Linea"];
+    $Compartido = $_POST["Compartido"];
+    $NoPonentes = $_POST["NoPonentes"];
+    $Titulo = $_POST["Titulo"];
+    $ID_Ponentes = $_POST["ID_Ponentes"];
+    $Ponentes = $_POST["Ponentes"];
+    $Instituciones = $_POST["Instituciones"];
+    $Investigador = $_POST["Investigador"];
+    $Fecha = $_POST["Fecha"];
+    $Dia = $_POST["Dia"];
+    $Turno = $_POST["Turno"];
+    $Bloque = $_POST["Bloque"];
+    $Salon = $_POST["Salon"];
+    $Ubicacion = $_POST["Ubicacion"];
+    $Sede = $_POST["Sede"];
+
+    // Conectar a la base de datos
+    $conn = new mysqli('localhost', 'root', '', 'bdelfin');
+
+    // Verificar la conexión
+    if ($conn->connect_error) {
+        die("La conexión a la base de datos falló: " . $conn->connect_error);
+    }
+
+    // Preparar la consulta SQL
+    $sql = "INSERT INTO nombre_de_tu_tabla (ID_Tra, Area, Linea, Compartido, NoPonentes, Titulo, ID_Ponentes, Ponentes, Instituciones, Investigador, Fecha, Dia, Turno, Bloque, Salon, Ubicacion, Sede)
+            VALUES ('$ID_Tra', '$Area', '$Linea', '$Compartido', '$NoPonentes', '$Titulo', '$ID_Ponentes', '$Ponentes', '$Instituciones', '$Investigador', '$Fecha', '$Dia', '$Turno', '$Bloque', '$Salon', '$Ubicacion', '$Sede')";
+
+    // Ejecutar la consulta
+    if ($conn->query($sql) === TRUE) {
+        echo "Datos insertados correctamente";
+    } else {
+        echo "Error al insertar datos: " . $conn->error;
+    }
+
+    // Cerrar la conexión
+    $conn->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -273,5 +320,6 @@
         });
     </script>
 </body>
+
 
 </html>
