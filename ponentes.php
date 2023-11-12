@@ -114,8 +114,6 @@
                                 height="48"></a></td>
                     <td><img src="../SRCB-master/assets/img/Borrar.png" alt="Borrar" width="48" height="48"
                             onclick="confirmarBorrado('2')" style="cursor: pointer;"></td>
-
-
                 </tr>
             </table>
 
@@ -178,12 +176,7 @@
                     }
                 });
             </script>
-
-
-
-           
-
-
+            
                 <script>
                     // JavaScript para abrir el cuadro de diálogo de selección de archivos
                     document.getElementById("cargarModeradoresButton").addEventListener("click", function () {
