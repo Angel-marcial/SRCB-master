@@ -1,9 +1,5 @@
 <?php
 
-use Investigador as GlobalInvestigador;
-use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column;
-use Sesion as GlobalSesion;
-
 include("../conexion.php");
 
 define("VENDOR",'C:\xampp\htdocs\SRCB-master-gith\vendor\autoload.php');
