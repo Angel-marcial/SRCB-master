@@ -85,6 +85,57 @@
         <p>
             <input type="text" id="searchInput" placeholder="Buscar...">
         </p>
+
+        
+
+        <?php
+        include("conexion.php");
+
+
+        $queryTrabajo = "SELECT ID_Trabajo, Linea, Titulo FROM Trabajo";
+        $resultTrabajo = $conn->query($queryTrabajo);
+        $datosTrabajo = array();
+
+        while ($rowTrabajo = $resultTrabajo->fetch_assoc()) 
+        {
+            $datosTrabajo[] = $rowTrabajo;
+        }
+
+        $conn->close();
+        ?>
+
+        <div class="table-responsive">
+            <table class="table table-bordered" id="miTabla">
+                <thead>
+                    <tr>
+                        <th>ID_Tra</th>
+                        <th>Datos</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($datosTrabajo as $fila) : ?>
+                        <tr>
+                            <td><?php echo $fila['ID_Trabajo']; ?></td>
+                            <td>
+                            <button class="botonP" onclick="mostrarModal
+                            (
+                                'ID: <?php echo $fila['ID_Trabajo']; ?> <br> Linea: <?php echo $fila['Linea']; ?> <br> Titulo : <?php echo $fila['Titulo']; ?> '
+                                
+
+                            )">Mostrar</button>
+                            </td>
+                            <td><a href="editar.html"><img src="../SRCB-master-gith/assets/img/Editar.png" alt="Editar" width="48" height="48"></a></td>
+                            <td><img src="../SRCB-master/assets/img/Borrar.png" alt="Borrar" width="48" height="48" onclick="confirmarBorrado('<?php echo $fila['ID_Trabajo']; ?>')" style="cursor: pointer;"></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+
+    <!--
         <div class="table-responsive">
             <table class="table table-bordered" id="miTabla">
                 <thead>
@@ -105,18 +156,8 @@
                     <td><img src="../SRCB-master/assets/img/Borrar.png" alt="Borrar" width="48" height="48"
                             onclick="confirmarBorrado('2')" style="cursor: pointer;"></td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>
-                        <button class="botonP" onclick="mostrarModal('Contenido 2')">Mostrar</button>
-                    </td>
-                    <td><a href="editar.html"><img src="../SRCB-master/assets/img/Editar.png" alt="Editar" width="48"
-                                height="48"></a></td>
-                    <td><img src="../SRCB-master/assets/img/Borrar.png" alt="Borrar" width="48" height="48"
-                            onclick="confirmarBorrado('2')" style="cursor: pointer;"></td>
-                </tr>
             </table>
-
+    -->
             <!-- Ventana modal para mostrar los datos -->
             <div id="miModal" class="modal">
                 <div class="modal-content">
