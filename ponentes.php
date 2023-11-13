@@ -221,6 +221,7 @@
                     document.getElementById("confirmContent").innerHTML = `
                         <p>¿Confirmar borrado?</p>
                         <button class="botonP" onclick="borrarRegistro(${id})">Confirmar Borrado</button>
+                        
                         <button class="botonP" onclick="cerrarConfirmModal()">Regresar</button>
                     `;
                     document.getElementById("confirmModal").style.display = "block";
@@ -233,6 +234,7 @@
                 function borrarRegistro(id) {
                     // Realizar la lógica de borrado aquí
                     // Después de borrar el registro, mostrar un mensaje de "Borrado exitoso" en el modal principal
+                    window.location.href = eliminar_trabajo.php?id=${id};
                     const mensajeBorrado = "Borrado exitoso";
                     mostrarModal(mensajeBorrado);
                     cerrarConfirmModal();

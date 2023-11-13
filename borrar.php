@@ -1,9 +1,20 @@
 <?php
-//aun no esta terminado
-include ("conexion.php");
+include("conexion.php");
 
-$id = $_GET('id');
+// Verificar si se recibió un ID válido
 
-$eliminar = "DELETE FRPM ponente ID_Ponente = '$id'";
+    $id_trabajo = $_GET['id'];
 
-$Reliminar = mysqul_query($conexion, eliminar);
+    // Preparar la consulta de eliminación
+    $queryEliminarTrabajo = "DELETE FROM trabajo WHERE ID_Trabajo = $id_trabajo";
+
+    // Ejecutar la consulta
+    if ($conn->query($queryEliminarTrabajo) === TRUE) {
+        // Éxito en la eliminación
+        echo "Registro eliminado con éxito.";
+    } else {
+        // Error en la eliminación
+        echo "Error al eliminar el registro: " . $conn->error;
+    }
+
+?>
