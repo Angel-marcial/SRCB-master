@@ -12,22 +12,26 @@ $resultado = $conn ->query($sql);
 
 $row = $resultado->fetch_assoc();
 
-if ($row['correo'] == $nombre && $row['contrasenia'] == $passwd) {
-    if($row['tipo']=="admin"){
+if ($row['correo'] == $nombre && $row['contrasenia'] == $passwd) 
+{
+    if($row['tipo']=="admin")
+    {
+        header("Location: ../index.html");
 
-        header("Location: ../ponentes.php");
-
-    }else{
-        header("Location: ../ejemplo.html");
+    }else if($row['tipo']=="mod")
+    {
+        header("Location: ../index.html");
     }
-    }else{
-        header("Location:../index.html");
+    }else
+    {
+        header("Location:../ponentes.php");
     }
 
-if ($resultado->num_rows > 0) {
-    # code...
+if ($resultado->num_rows > 0) 
+{
     echo 'Usuario Correcto';
-}else {
+}else 
+{
     echo 'El usuario no existe';
 }
 

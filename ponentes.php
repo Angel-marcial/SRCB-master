@@ -92,7 +92,12 @@
         include("conexion.php");
 
 
-        $queryTrabajo = "SELECT ID_Trabajo, Linea, Titulo FROM Trabajo";
+        $queryTrabajo = "SELECT
+        trabajo.ID_Trabajo, trabajo.Linea, trabajo.Titulo, fecha.Dia, turno.Nombre_Turno
+        FROM trabajo
+        JOIN fecha ON trabajo.ID_Fecha = fecha.ID_Fecha
+        JOIN turno ON trabajo.ID_Turno = turno.ID_Turno";
+
         $resultTrabajo = $conn->query($queryTrabajo);
         $datosTrabajo = array();
 
@@ -121,8 +126,7 @@
                             <td>
                             <button class="botonP" onclick="mostrarModal
                             (
-                                'ID: <?php echo $fila['ID_Trabajo']; ?> <br> Linea: <?php echo $fila['Linea']; ?> <br> Titulo : <?php echo $fila['Titulo']; ?> '
-                                
+                                'ID: <?php echo $fila['ID_Trabajo']; ?> <br> Linea: <?php echo $fila['Linea']; ?> <br> Titulo : <?php echo $fila['Titulo']; ?>  '
                             )">Mostrar</button>
                             </td>
                             <td><a href="editar.html"><img src="../SRCB-master-gith/assets/img/Editar.png" alt="Editar" width="48" height="48"></a></td>
@@ -133,30 +137,6 @@
             </table>
         </div>
 
-
-    <!--
-        <div class="table-responsive">
-            <table class="table table-bordered" id="miTabla">
-                <thead>
-                    <tr>
-                        <th>ID_Tra</th>
-                        <th>Datos</th>
-                        <th>Editar</th>
-                        <th>Borrar</th>
-                    </tr>
-                </thead>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <button class="botonP" onclick="mostrarModal('Contenido 1')">Mostrar</button>
-                    </td>
-                    <td><a href="editar.html"><img src="../SRCB-master-gith/assets/img/Editar.png" alt="Editar" width="48"
-                                height="48"></a></td>
-                    <td><img src="../SRCB-master/assets/img/Borrar.png" alt="Borrar" width="48" height="48"
-                            onclick="confirmarBorrado('2')" style="cursor: pointer;"></td>
-                </tr>
-            </table>
-    -->
             <!-- Ventana modal para mostrar los datos -->
             <div id="miModal" class="modal">
                 <div class="modal-content">
@@ -323,17 +303,19 @@
     </script>
 
     <!-- Ventana modal -->
+
+    <form method="post" action="validaciones/login.php">
     <div class="vent2" id="loginModal">
         <span class="close-modal" id="closeModal">&times;</span>
         <div class="modal-header" style="color: orange; text-align: center;">Inicio de sesión</div>
         <div style="text-align: center;">
-            <input type="text" class="input-box" id="usuarioInput" placeholder="Usuario" style="margin: 10px 0;">
-            <input type="password" class="input-box" id="contrasenaInput" placeholder="Contraseña"
-                style="margin: 10px 0;">
-            <button class="modal-button" id="entrarButton">Entrar</button>
+            <input type="text" class="input-box" name="nombre" placeholder="nombre" style="margin: 10px 0;">
+            <input type="password" class="input-box" name="contrasena" placeholder="contrasena" style="margin: 10px 0;">
+            <button type="submit" class="modal-button" id="entrarButton">Entrar</button>
             <p class="modal-text">Recuperar datos de sesión</p>
         </div>
     </div>
+</form>
 
     <script>
         // Función para mostrar la ventana modal
@@ -374,9 +356,8 @@
     </script>
 
     <script>
-        // Buscador
         document.getElementById("searchInput").addEventListener("input", function () {
-            buscarEnTabla(this.value);
+            buscarEnTabla(thlue);
         });
     </script>
 
