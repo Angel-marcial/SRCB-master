@@ -123,7 +123,6 @@
                             (
                                 'ID: <?php echo $fila['ID_Trabajo']; ?> <br> Linea: <?php echo $fila['Linea']; ?> <br> Titulo : <?php echo $fila['Titulo']; ?> '
                                 
-
                             )">Mostrar</button>
                             </td>
                             <td><a href="editar.html"><img src="../SRCB-master-gith/assets/img/Editar.png" alt="Editar" width="48" height="48"></a></td>
